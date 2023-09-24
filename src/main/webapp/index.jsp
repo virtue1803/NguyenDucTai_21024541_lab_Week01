@@ -11,7 +11,7 @@
     Mật khẩu: <input type="password" name="password" placeholder="password">
     <input type="submit" name="action" value="login"><br>
 
-    <p style="font-size: 15px; color: red"> <%= request.getServletContext().getAttribute("loginStatus") != null ?  "đăng nhậpko thành công" : ""%>
+    <p style="font-size: 15px; color: red"> <%= request.getServletContext().getAttribute("loginStatus") != null ?  "đăng nhập ko thành công" : ""%>
 
     <%
         request.getServletContext().setAttribute("action","login");

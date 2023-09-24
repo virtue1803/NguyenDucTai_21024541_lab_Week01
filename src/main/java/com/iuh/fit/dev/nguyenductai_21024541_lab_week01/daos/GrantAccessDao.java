@@ -7,6 +7,7 @@ import com.iuh.fit.dev.nguyenductai_21024541_lab_week01.models.Role;
 import com.iuh.fit.dev.nguyenductai_21024541_lab_week01.repository.IRepository;
 import jakarta.inject.Inject;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ import java.util.Optional;
 public class GrantAccessDao implements IRepository<GrantAccess> {
     @Inject
     private ConnectDB connectDB;
+
+    public GrantAccessDao(){
+        connectDB = new ConnectDB();
+    }
     @Override
     public boolean them(GrantAccess grantAccess) {
         return false;
@@ -34,15 +39,16 @@ public class GrantAccessDao implements IRepository<GrantAccess> {
     @Override
     public List<GrantAccess> layDs() {
         try {
-            List<GrantAccess> grantAccesses = new ArrayList<>();
+            List<GrantAccess> list = new ArrayList<GrantAccess>();
             Statement statement = connectDB.getConnection().createStatement();
-            ResultSet resultSet =  statement.executeQuery("select * from role");
-            while (true){
+            ResultSet resultSet =  statement.executeQuery("select * from grant_access");
+            while (resultSet.next()){
                 Account account = new AccountDao().layTheoMa(resultSet.getString(1)).get();
                 Role role = new RoleDao().layTheoMa(resultSet.getString(2)).get();
-                GrantAccess grantAccess = new GrantAccess( account,role,resultSet.getInt(3) == 1 ? true :false,resultSet.getString(4) == null ? "": resultSet.getString(4));
-                return grantAccesses;
+                GrantAccess grantAccess = new GrantAccess( account,role,resultSet.getInt(3) == 1 ? true :false,resultSet.getString(4) == null ? null: resultSet.getString(4));
+                list.add(grantAccess);
             }
+            return list;
         } catch (Exception e){
             e.printStackTrace();
             return null;

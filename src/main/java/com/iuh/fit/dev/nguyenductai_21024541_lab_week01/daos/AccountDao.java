@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountDao implements IRepository<Account> {
-
+    @Inject
     private ConnectDB connectDB;
     public AccountDao(){
         connectDB = new ConnectDB();
@@ -38,26 +38,43 @@ public class AccountDao implements IRepository<Account> {
     @Override
     public List<Account> layDs() {
         try {
-            List<Account> accounts = new ArrayList<>();
+            List<Account> list = new ArrayList<Account>();
             Statement statement = connectDB.getConnection().createStatement();
-            ResultSet resultSet =  statement.executeQuery("select * from account");
-            while (true){
+            ResultSet resultSet = statement.executeQuery("select * from account");
+            while (resultSet.next()){
                 Account account = new Account(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getInt(6));
-                accounts.add(account);
-                return accounts;
+                list.add(account);
             }
-        } catch (Exception e){
+            return list;
+        }catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
 
+
     @Override
     public Optional<Account> layTheoMa(Object... objects) {
+
+        try {
+            PreparedStatement preparedStatement = connectDB.getConnection().prepareStatement("select * from account where  account_id = ?");
+            preparedStatement.setString(1, objects.clone()[0].toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                Account account = new Account(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getInt(6));
+                return Optional.of(account);
+            } else {
+                throw  new Exception("không tìm thấy đữ liệu");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Account> kiemTraDangNhap(String userName, String password){
         try {
             PreparedStatement preparedStatement = connectDB.getConnection().prepareStatement("select * from account where  account_id = ? and password = ?");
-            String userName  = objects[0].toString();
-            String password  = objects[1].toString();
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -72,6 +89,4 @@ public class AccountDao implements IRepository<Account> {
             return Optional.empty();
         }
     }
-
-    public boolean kiemTraDangNhap(String userName)
 }

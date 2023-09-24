@@ -19,7 +19,7 @@ public class ControllServlet extends HttpServlet {
         String getAction  = req.getServletContext().getAttribute("action").toString();
         if(getAction.equalsIgnoreCase("login")) {
             AccountDao accountDao = new AccountDao();
-            Optional<Account> optional = accountDao.layTheoMa(req.getParameter("accountID"),req.getParameter("password"));
+            Optional<Account> optional = accountDao.kiemTraDangNhap(req.getParameter("accountID"),req.getParameter("password"));
             Account account = null;
             try {
                 account = optional.get();
