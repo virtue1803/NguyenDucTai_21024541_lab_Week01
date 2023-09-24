@@ -30,6 +30,8 @@ dependencies {
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
   implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+  implementation 'org.jboss.weld.servlet:weld-servlet:2.4.8.Final'
+
 
 }
 
