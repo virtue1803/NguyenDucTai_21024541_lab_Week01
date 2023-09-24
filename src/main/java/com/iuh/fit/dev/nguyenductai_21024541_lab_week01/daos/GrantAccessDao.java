@@ -45,7 +45,7 @@ public class GrantAccessDao implements IRepository<GrantAccess> {
             while (resultSet.next()){
                 Account account = new AccountDao().layTheoMa(resultSet.getString(1)).get();
                 Role role = new RoleDao().layTheoMa(resultSet.getString(2)).get();
-                GrantAccess grantAccess = new GrantAccess( account,role,resultSet.getInt(3) == 1 ? true :false,resultSet.getString(4) == null ? null: resultSet.getString(4));
+                GrantAccess grantAccess = new GrantAccess( account,role,resultSet.getInt(3) == 1 ? true :false,resultSet.getString(4)==null ? null : resultSet.getString(4));
                 list.add(grantAccess);
             }
             return list;

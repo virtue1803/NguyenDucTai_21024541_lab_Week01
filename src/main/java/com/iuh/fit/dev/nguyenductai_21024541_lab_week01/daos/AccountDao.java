@@ -2,6 +2,7 @@ package com.iuh.fit.dev.nguyenductai_21024541_lab_week01.daos;
 
 import com.iuh.fit.dev.nguyenductai_21024541_lab_week01.connectDB.ConnectDB;
 import com.iuh.fit.dev.nguyenductai_21024541_lab_week01.models.Account;
+import com.iuh.fit.dev.nguyenductai_21024541_lab_week01.models.Role;
 import com.iuh.fit.dev.nguyenductai_21024541_lab_week01.repository.IRepository;
 import jakarta.enterprise.context.Initialized;
 import jakarta.inject.Inject;
@@ -57,19 +58,20 @@ public class AccountDao implements IRepository<Account> {
     public Optional<Account> layTheoMa(Object... objects) {
 
         try {
-            PreparedStatement preparedStatement = connectDB.getConnection().prepareStatement("select * from account where  account_id = ?");
+            PreparedStatement preparedStatement = connectDB.getConnection().prepareStatement("select * from account where account_id = ? ");
             preparedStatement.setString(1, objects.clone()[0].toString());
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
-                Account account = new Account(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getInt(6));
+            if (resultSet.next()) {
+                Account account = new Account(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6));
                 return Optional.of(account);
             } else {
-                throw  new Exception("không tìm thấy đữ liệu");
+                throw new Exception("ko tìm thấy dữ liệu");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return Optional.empty();
         }
+        return Optional.empty();
+
     }
 
     public Optional<Account> kiemTraDangNhap(String userName, String password){

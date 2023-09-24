@@ -53,13 +53,12 @@
     String GRDataShow = "";
     for (GrantAccess grantAccess : grantAcessService.layDanhSachGrantAccess()){
         GRDataShow += "<tr>" +
-                "<td>" + grantAccess.getAccountID() + "</td>" +
-                "<td>" + grantAccess.getRoleID() + "</td>" +
-                "<td>" + grantAccess.isGrant() + "</td>" +
+                "<td>" + grantAccess.getAccountID().getAccountID() + "</td>" +
+                "<td>" + grantAccess.getRoleID().getRoleID() + "</td>" +
+                "<td>" + (grantAccess.isGrant() ? "1":"0") + "</td>" +
                 "<td>" + grantAccess.getNote() +  "</td>" +
                 "<t/tr>";
     }
-
 %>
 <body>
 <div> <h1> Thông tin cá nhân</h1>
