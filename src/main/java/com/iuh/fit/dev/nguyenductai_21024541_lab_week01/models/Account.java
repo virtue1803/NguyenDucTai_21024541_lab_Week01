@@ -1,20 +1,30 @@
 package com.iuh.fit.dev.nguyenductai_21024541_lab_week01.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Account {
-    private String accountID, password, email, phone;
+public class Account implements Serializable {
+    private String accountID,fullname, password, email, phone;
     private int status;
 
     public Account() {
     }
 
-    public Account(String accountID, String password, String email, String phone, int status) {
+    public Account(String accountID, String fullname, String password, String email, String phone, int status) {
         this.accountID = accountID;
+        this.fullname = fullname;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.status = status;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getAccountID() {
@@ -74,6 +84,7 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "accountID='" + accountID + '\'' +
+                ", fullname='" + fullname + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
