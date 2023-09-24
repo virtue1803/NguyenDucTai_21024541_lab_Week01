@@ -9,7 +9,10 @@
 <form action="control-servlet" method="post">
     Tên tài khoản:  <input type="text" name="accountID" placeholder="userName" >
     Mật khẩu: <input type="password" name="password" placeholder="password">
-    <input type="submit" name="action" value="login">
+    <input type="submit" name="action" value="login"><br>
+
+    <p style="font-size: 15px; color: red"> <%= request.getServletContext().getAttribute("loginStatus") != null ?  "đăng nhậpko thành công" : ""%>
+
     <%
         request.getServletContext().setAttribute("action","login");
     %>

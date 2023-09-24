@@ -9,6 +9,8 @@ import jakarta.inject.Inject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +37,23 @@ public class AccountDao implements IRepository<Account> {
 
     @Override
     public List<Account> layDs() {
-        return null;
+        try {
+            List<Account> accounts = new ArrayList<>();
+            Statement statement = connectDB.getConnection().createStatement();
+            ResultSet resultSet =  statement.executeQuery("select * from account");
+            while (true){
+                Account account = new Account(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getInt(6));
+                accounts.add(account);
+                return accounts;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public Optional<Account> layTheoMa(Object... objects) throws Exception {
+    public Optional<Account> layTheoMa(Object... objects) {
         try {
             PreparedStatement preparedStatement = connectDB.getConnection().prepareStatement("select * from account where  account_id = ? and password = ?");
             String userName  = objects[0].toString();

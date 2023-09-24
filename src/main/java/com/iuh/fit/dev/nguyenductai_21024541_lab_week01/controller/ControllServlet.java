@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @WebServlet(name = "ControlServlet", value ="/control-servlet" )
@@ -18,20 +19,21 @@ public class ControllServlet extends HttpServlet {
         String getAction  = req.getServletContext().getAttribute("action").toString();
         if(getAction.equalsIgnoreCase("login")) {
             AccountDao accountDao = new AccountDao();
+            Optional<Account> optional = accountDao.layTheoMa(req.getParameter("accountID"),req.getParameter("password"));
+            Account account = null;
             try {
-                Optional<Account> optional = accountDao.layTheoMa((req.getParameter("accountID")),req.getParameter("password"));
-                Account account = optional.get();
-                if(account == null){
-                    resp.getWriter().println("rỗng");
-                } else {
-                    req.getServletContext().setAttribute("AccountData", account);
-                    req.getServletContext().getRequestDispatcher("/user-infor.jsp").forward(req,resp);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                account = optional.get();
+            } catch (NoSuchElementException e) {
+                e.printStackTrace();
             }
-
+            if (account == null){
+                req.getServletContext().setAttribute("loginStatus","false");
+                req.getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
+            }else {
+                req.getServletContext().setAttribute("loginStatus",null);
+                req.getServletContext().setAttribute("AccountData",optional.get());
+                req.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req,resp);
+            }
         }
-
     }
 }
